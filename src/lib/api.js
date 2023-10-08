@@ -15,7 +15,7 @@ export default class TMDBApi {
 
     getMovie = async (id) => {
         const response = await fetch(
-        `${this.apiBaseUrl}/movie/${id}?api_key=${this.apiKey}&append_to_response=recommendation`
+        `${this.apiBaseUrl}/movie/${id}?api_key=${this.apiKey}&append_to_response=recommendations`
         );
         return response.json();
     }

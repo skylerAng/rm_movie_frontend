@@ -12,7 +12,7 @@ const MovieDetails = () => {
     const { genres } = useSelector((store) => store);
 
     useEffect(() => {
-        dispatch(getMovie(id ? parseInt(id, 10) : 0))
+        dispatch(getMovie(id ? parseInt(id, 10) : 0));
 
         return () => {
             dispatch(resetState)
@@ -22,9 +22,10 @@ const MovieDetails = () => {
     useEffect(() => {
         // add ternary to check for empty
         if (id !== movie.id?.toString()) {
-            dispatch(getMovie(id ? parseInt(id, 10) : 0))
+            dispatch(getMovie(id ? parseInt(id, 10) : 0));
         }
     }, [id, movie.id])
+    console.log(`Movie is fetching? : ${movie.isFetching}`)
     return (
         movie.isFetching ? <Loader /> : <Movie movie={movie} genres={genres}/>
     );

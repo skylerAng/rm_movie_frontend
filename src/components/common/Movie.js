@@ -1,6 +1,6 @@
 import React from "react";
 import { Grid, Typography } from "@mui/material";
-import movie from "../../redux/features/movie";
+import Movies from "./Movies";
 import { IMAGES_PATH, COVER_PLACEHOLDER} from "../../configs/config";
 import { styled } from "@mui/system";
 
@@ -14,24 +14,134 @@ const ImgStyled = styled('img')({
 
 const Movie = ({movie, genres}) => {
 
+    const formatRuntime = (runtime) => {
+        const hours = Math.floor(runtime / 60) + 'h';
+        const minutes = (runtime % 60) + 'm';
+
+        return `${hours} ${minutes}`;
+    }
+
+    console.log(movie);
     return(
-        <GridStyled container={true} spacing={2}>
-            <Grid item={true} md={3}>
-                {
-                     movie.poster_path ? 
-                     <ImgStyled 
-                        src={`${IMAGES_PATH}/w300${movie.poster_path}`}
-                        alt={movie.title}
-                     /> 
-                     :
-                     <ImgStyled 
-                        src={COVER_PLACEHOLDER}
-                        alt={movie.title}
-                     />
-                }
-            </Grid>
-            <Grid item={true} md={9}></Grid>
-        </GridStyled>
+        <>
+            <GridStyled container={true} spacing={2}>
+                <Grid item={true} md={3}>
+                    {
+                        movie.poster_path ? 
+                        <ImgStyled 
+                            src={`${IMAGES_PATH}/w300${movie.poster_path}`}
+                            alt={movie.title}
+                        /> 
+                        :
+                        <ImgStyled 
+                            src={COVER_PLACEHOLDER}
+                            alt={movie.title}
+                        />
+                    }
+                </Grid>
+                <Grid item={true} md={9}>
+                    <Typography component="h1" variant="h3" gutterBottom={true}>
+                        {movie.title}
+                    </Typography>
+                    {
+                        movie.tagline && (
+                            <>
+                                <Typography component="h3" variant="h6">
+                                    Tagline: 
+                                </Typography>
+                                <Typography gutterBottom={true} variant="body1">
+                                    {movie.tagline}
+                                </Typography>
+                            </>
+                        )
+                    }
+                    {
+                        movie.genres && (
+                            <>
+                                <Typography component="h3" variant="h6">
+                                    Genres: 
+                                </Typography>
+                                <Typography gutterBottom={true} variant="body1">
+                                    {movie.genres
+                                        .map((genre) => genre.name)
+                                        .join(", ")
+                                    }
+                                </Typography>
+                            </>
+                        )
+                    }
+                    {
+                        movie.production_countries && (
+                            <>
+                                <Typography component="h3" variant="h6">
+                                    Country: 
+                                </Typography>
+                                <Typography gutterBottom={true} variant="body1">
+                                    {movie.production_countries
+                                        .map((country) => country.name)
+                                        .join(", ")
+                                    }
+                                </Typography>
+                            </>
+                        )
+                    }
+                    {
+                        movie.runtime && (
+                            <>
+                                <Typography component="h3" variant="h6">
+                                    Duration: 
+                                </Typography>
+                                <Typography gutterBottom={true} variant="body1">
+                                    {
+                                        formatRuntime(movie.runtime)
+                                    }
+                                </Typography>
+                            </>
+                        )
+                    }
+                    {
+                        movie.release_date && (
+                            <>
+                                <Typography component="h3" variant="h6">
+                                    Release Date: 
+                                </Typography>
+                                <Typography gutterBottom={true} variant="body1">
+                                    {
+                                        new Date(movie.release_date).toLocaleDateString("en-US", {
+                                            year: "numeric",
+                                            month: "long",
+                                            day: "numeric"
+                                        })
+                                    }
+                                </Typography>
+                            </>
+                        )
+                    }
+                    {
+                        movie.overview && (
+                            <>
+                                <Typography component="h3" variant="h6">
+                                    Overview: 
+                                </Typography>
+                                <Typography gutterBottom={true} variant="body1">
+                                    { movie.overview }
+                                </Typography>
+                            </>
+                        )
+                    }
+                </Grid>
+            </GridStyled>
+            {
+                movie.recommendations && (
+                    <>
+                        <Typography component="h2" variant="h4" gutterBottom={true}>
+                            Recommended movies
+                        </Typography>
+                        <Movies movies={movie.recommendations} genres={genres}></Movies>
+                    </>
+                )
+            }
+        </>
     )
 };
 

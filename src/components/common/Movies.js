@@ -1,9 +1,10 @@
 import React from "react";
-import { ImageList, ImageListItem, ImageListItemBar } from "@mui/material";
+import { ImageList, ImageListItem, ImageListItemBar, useMediaQuery } from "@mui/material";
 import { Link } from "react-router-dom";
 import { IMAGES_PATH } from "../../configs/config";
 import { mapGenres } from "../../lib/helper";
 import { styled } from "@mui/system";
+import { useTheme } from "@mui/material/styles";
 
 const ImgStyled = styled('img')({
     width: '100%',
@@ -11,11 +12,18 @@ const ImgStyled = styled('img')({
     objectFit: 'cover'
 });
 
+const ImageListItemStyled = styled(ImageListItem)({
+    overflow: 'hidden'
+})
+
 const Movies = ({movies, genres}) => {
-    
+    const theme = useTheme();
+    // Match breakpoint every time it detects small screen
+    const matchDownMd = useMediaQuery(theme.breakpoints.down('sm'));
+
     if (Array.isArray(movies.results[0])){
         return (
-            <ImageList cols={5} rowHeight={365} gap={12}>
+            <ImageList cols={matchDownMd ? 1 : 5} rowHeight={365} gap={12}>
                 {
                     movies.results[0].map((movie) => (  
                         
@@ -23,7 +31,7 @@ const Movies = ({movies, genres}) => {
                         console.log("Poster Path:", movie.poster_path),
                         console.log("Genres:", mapGenres(movie.genre_ids, genres)),
                     
-                        <ImageListItem key={movie.id}>
+                        <ImageListItemStyled key={movie.id}>
                             <Link to={`/movie/${movie.id}`}>
                                 {/* Check and render poster if exist */}
                                 {
@@ -37,7 +45,7 @@ const Movies = ({movies, genres}) => {
                                     subtitle={<span>{mapGenres(movie.genre_ids, genres)}</span>}
                                 />
                             </Link>
-                        </ImageListItem>
+                        </ImageListItemStyled>
                     ))
                 }
             </ImageList>
