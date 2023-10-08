@@ -9,7 +9,7 @@ const MovieDetails = () => {
     const dispatch = useDispatch();
     const { id } = useParams();
     const { movie } = useSelector((store) => store);
-    const { genres } = useSelector((store) => store);
+    const { genres } = useSelector((store) => store.genres);
 
     useEffect(() => {
         dispatch(getMovie(id ? parseInt(id, 10) : 0));

@@ -21,7 +21,7 @@ const Movie = ({movie, genres}) => {
         return `${hours} ${minutes}`;
     }
 
-    console.log(movie);
+    console.log(movie.recommendations);
     return(
         <>
             <GridStyled container={true} spacing={2}>
